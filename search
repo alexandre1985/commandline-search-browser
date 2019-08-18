@@ -97,7 +97,7 @@ pirate="https://thepiratebay.org/search/%MYSEARCHTERM"
 bay=pirate
 
 # Google Translate
-t="https://translate.google.com/?source=osdd#view=home&op=translate&sl=auto&tl=${FUNC:-`show_if_else ${2} auto pt en es fr it`}&text=${FUNC:-`remove_first_word_if '%MYSEARCHTERM' pt en es fr it`}"
+t="https://translate.google.com/?source=osdd#view=home&op=translate&sl=auto&tl=${FUNC:-`show_if_else ${2} auto pt en es fr it`}&text=${FUNC:-`remove_first_word_if '\'%MYSEARCHTERM\'' pt en es fr it`}"
 translate=t
 
 # Ebay
