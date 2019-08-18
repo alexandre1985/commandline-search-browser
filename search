@@ -63,6 +63,14 @@ twitter=tw
 w="https://en.wikipedia.org/wiki/%MYSEARCHTERM"
 wiki=w
 
+# Youtube
+y="https://www.youtube.com/results?search_query=%MYSEARCHTERM"
+youtube=y
+
+# Vimeo
+v="https://vimeo.com/search?q=%MYSEARCHTERM"
+vimeo=v
+
 # Cambridge Dictionary
 en="https://dictionary.cambridge.org/search/english/direct/?q=%MYSEARCHTERM"
 dic=en
