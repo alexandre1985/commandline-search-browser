@@ -27,7 +27,7 @@ BROWSER_COMMAND=xdg-open
 
 ## to add the "search term" to the search url use the word %MYSEARCHTERM
 ## for example, for Google you can add the line:
-##g="https://www.google.com/search?q=%MYSEARCHTERM"
+##g=https://www.google.com/search?q=%MYSEARCHTERM
 ## being "g" the google search engine alias
 ## and "https://www.google.com/search?q=%MYSEARCHTERM" the google search url that you want to use
 
@@ -40,72 +40,72 @@ BROWSER_COMMAND=xdg-open
 default=s
 
 # StartPage
-s="https://www.startpage.com/do/dsearch?query=%MYSEARCHTERM"
+s=https://www.startpage.com/do/dsearch?query=%MYSEARCHTERM
 startpage=s
 
 # Google
-g="https://www.google.com/search?q=%MYSEARCHTERM"
+g=https://www.google.com/search?q=%MYSEARCHTERM
 google=g
 
 # DuckDuckGo
-d="https://duckduckgo.com/?q=%MYSEARCHTERM"
+d=https://duckduckgo.com/?q=%MYSEARCHTERM
 duckduck=d
 
 # Bing
-b="https://www.bing.com/search?q=%MYSEARCHTERM"
+b=https://www.bing.com/search?q=%MYSEARCHTERM
 bing=b
 
 # Twitter
-tw="https://twitter.com/search?q=%MYSEARCHTERM"
+tw=https://twitter.com/search?q=%MYSEARCHTERM
 twitter=tw
 
 # Wikipedia (en)
-w="https://en.wikipedia.org/wiki/%MYSEARCHTERM"
+w=https://en.wikipedia.org/wiki/%MYSEARCHTERM
 wiki=w
 
 # Youtube
-y="https://www.youtube.com/results?search_query=%MYSEARCHTERM"
+y=https://www.youtube.com/results?search_query=%MYSEARCHTERM
 youtube=y
 
 # Vimeo
-v="https://vimeo.com/search?q=%MYSEARCHTERM"
+v=https://vimeo.com/search?q=%MYSEARCHTERM
 vimeo=v
 
 # Cambridge Dictionary
-en="https://dictionary.cambridge.org/search/english/direct/?q=%MYSEARCHTERM"
+en=https://dictionary.cambridge.org/search/english/direct/?q=%MYSEARCHTERM
 dic=en
 
 # Arch Linux Wiki
-arch="https://wiki.archlinux.org/index.php?search=%MYSEARCHTERM"
+arch=https://wiki.archlinux.org/index.php?search=%MYSEARCHTERM
 
 # Arch Linux Packages
-pkg="https://www.archlinux.org/packages/?q=%MYSEARCHTERM"
+pkg=https://www.archlinux.org/packages/?q=%MYSEARCHTERM
 
 # Arch Linux AUR
-aur="https://aur.archlinux.org/packages/?O=0&K=%MYSEARCHTERM"
+aur=https://aur.archlinux.org/packages/?O=0&K=%MYSEARCHTERM
 
 # Manjaro Linux Forum
-m="https://forum.manjaro.org/search?q=%MYSEARCHTERM"
+m=https://forum.manjaro.org/search?q=%MYSEARCHTERM
 manjaro=m
 
 # GitHub
-gh="https://github.com/search?&ref=simplesearch&q=%MYSEARCHTERM"
+gh=https://github.com/search?&ref=simplesearch&q=%MYSEARCHTERM
 github=gh
 
 # The Pirate Bay
-pirate="https://thepiratebay.org/search/%MYSEARCHTERM"
+pirate=https://thepiratebay.org/search/%MYSEARCHTERM
 bay=pirate
 
 # Google Translate
-t="https://translate.google.com/?source=osdd#view=home&op=translate&sl=auto&tl=${FUNC:-`show_if_else ${2} auto pt en es fr it`}&text=${FUNC:-`remove_first_word_if '\'%MYSEARCHTERM\'' pt en es fr it`}"
+t=https://translate.google.com/?source=osdd#view=home&op=translate&sl=auto&tl=${FUNC:-`show_if_else ${2} auto pt en es fr it`}&text=${FUNC:-`remove_first_word_if '\'%MYSEARCHTERM\'' pt en es fr it`}
 translate=t
 
 # Ebay
-e="https://www.ebay.com/sch/i.html?&_nkw=%MYSEARCHTERM"
+e=https://www.ebay.com/sch/i.html?&_nkw=%MYSEARCHTERM
 ebay=e
 
 # Amazon.com
-a="https://www.amazon.com/s?k=%MYSEARCHTERM"
+a=https://www.amazon.com/s?k=%MYSEARCHTERM
 amazon=a' > $1
 }
 
