@@ -106,7 +106,14 @@ ebay=e
 
 # Amazon.com
 a=https://www.amazon.com/s?k=%MYSEARCHTERM
-amazon=a' > $1
+amazon=a
+
+# PGP - HKP Pool (https://sks-keyservers.net/)
+hkp=https://sks-keyservers.net/pks/lookup?op=vindex&fingerprint=on&search=%MYSEARCHTERM
+
+# PGP
+pgp=hkp
+gpg=pgp' > $1
 }
 
 
@@ -310,24 +317,24 @@ SEARCH_ENGINE_URL="${SEARCH_ENGINE_ALIAS}"
 
 ## read and process the bash variables from the $SEARCH_ENGINE_URL
 
-### create associative array for the bash variables from the target url of the config file
-declare -A URL_CONFIG_VARS
+# ### create associative array for the bash variables from the target url of the config file
+# declare -A URL_CONFIG_VARS
 
 
-while IFS= read -r bash_variable; do
+# while IFS= read -r bash_variable; do
 	
-	#### save the bash variables from the target url of the config file
-	export "name"="${bash_variable}"
-	eval "value=\"${bash_variable}\""
-	URL_CONFIG_VARS[${name}]="${value}"
+# 	#### save the bash variables from the target url of the config file
+# 	export "name"="${bash_variable}"
+# 	eval "value=\"${bash_variable}\""
+# 	URL_CONFIG_VARS[${name}]="${value}"
 
-	#### remove the saved differences from $SEARCH_TERM
-	SEARCH_TERM=$(echo ${SEARCH_TERM} | ${SED} "s/${value} *//g")
+# 	#### remove the saved differences from $SEARCH_TERM
+# 	SEARCH_TERM=$(echo ${SEARCH_TERM} | ${SED} "s/${value} *//g")
 
-done < <(get_bash_variables_from_string ${SEARCH_ENGINE_URL})
+# done < <(get_bash_variables_from_string ${SEARCH_ENGINE_URL})
 
-### export for outside use
-export URL_CONFIG_VARS
+# ### export for outside use
+# export URL_CONFIG_VARS
 
 
 # evaluate the bash variables of $SEARCH_ENGINE_URL
