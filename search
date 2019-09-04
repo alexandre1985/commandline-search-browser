@@ -75,6 +75,9 @@ vimeo=v
 en=https://dictionary.cambridge.org/search/english/direct/?q=%MYSEARCHTERM
 dic=en
 
+# Priberam - Portuguese Dictionary
+pt=https://dicionario.priberam.org/%MYSEARCHTERM
+
 # Arch Linux Wiki
 arch=https://wiki.archlinux.org/index.php?search=%MYSEARCHTERM
 
