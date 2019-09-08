@@ -126,19 +126,19 @@ function sanitize_and_import_conf_file() {
 
 	# config file will be the last argument
 	# in order to the config file correspond $2 to script's $2, for example
-	CFG_FILE="${@: -1}"
+	local CFG_FILE="${@: -1}"
 	# sanitize $CFG_FILE and save it in CFG_CONTENT
 	# select on lines that have
-	CFG_CONTENT="$(${SED} -r '/[^=]+=[^=]+/!d' ${CFG_FILE} | ${SED} -r 's/\s+=\s+/=/g')"
+	local CFG_CONTENT="$(${SED} -r '/[^=]+=[^=]+/!d' ${CFG_FILE} | ${SED} -r 's/\s+=\s+/=/g')"
 	# add an alias prefix to all vars
 	## also exclude comment lines
 	CFG_CONTENT="$(echo "${CFG_CONTENT}" | ${SED} -r '/^#/d')" # | ${SED} "s/^/${ALIAS_VAR_PREFIX}/")
 
 	while IFS= read -r line; do
 		#add alias var prefix to line
-		line_with_alias_prefix="$(alias_varname_with_prefix "${line}")"
-		var="$(echo ${line_with_alias_prefix%%=*} | ${SED} -r 's/ *$//g')"
-		value="$(echo ${line_with_alias_prefix#*=} | ${SED} -r 's/^ *//g')"
+		local line_with_alias_prefix="$(alias_varname_with_prefix "${line}")"
+		local var="$(echo ${line_with_alias_prefix%%=*} | ${SED} -r 's/ *$//g')"
+		local value="$(echo ${line_with_alias_prefix#*=} | ${SED} -r 's/^ *//g')"
 		# remove quotation marks from $value
 		value="$(echo ${value} | ${SED} -r 's/"//g')"
 		export "${var}"="${value}"
@@ -157,8 +157,8 @@ function is_word_an_alias_of_config() {
 
 # <string>: name of the alias
 function get_alias_value_using_alias_keyword() {
-	PROCESSED_ALIAS_NAME="$(alias_varname_with_prefix ${1})"
-	VALUE="${!PROCESSED_ALIAS_NAME}"
+	local PROCESSED_ALIAS_NAME="$(alias_varname_with_prefix ${1})"
+	local VALUE="${!PROCESSED_ALIAS_NAME}"
 	printf '%s' "${VALUE}"
 }
 
@@ -188,7 +188,7 @@ EOF
 
 # args: <string> <Nth-position> (starting from 1)
 function get_N_word_from_string() {
-	tmp_arr=(${1})
+	local tmp_arr=(${1})
 	printf ${tmp_arr[${2}-1]}
 }
 
@@ -207,7 +207,7 @@ function get_bash_variables_from_string() {
 }
 
 function print_help() {
-	NAME=$(${BASENAME} $0)
+	local NAME=$(${BASENAME} $0)
 	echo -e "Usage:\n  ${NAME} [--help|-h]\n  ${NAME} [search_engine_alias] <search term>\n\nThe ${NAME} search engine aliases are defined in the ${CONFIG_FILE_MAIN} file."
 	exit 0
 }
