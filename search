@@ -100,7 +100,7 @@ pirate=https://thepiratebay.org/search/%MYSEARCHTERM
 bay=pirate
 
 # Google Translate
-t=https://translate.google.com/?source=osdd#view=home&op=translate&sl=auto&tl=${FUNC:-`show_if_else ${2} auto pt en es fr it`}&text=${FUNC:-`remove_first_word_if '\'%MYSEARCHTERM\'' pt en es fr it`}
+t=https://translate.google.com/?source=osdd#view=home&op=translate&sl=auto&tl=${FUNC:-`show_if_else ${2} auto pt en es fr it`}&text=${FUNC:-`remove_first_word_if_belongs_to '\'%MYSEARCHTERM\'' pt en es fr it`}
 translate=t
 
 # Ebay
@@ -189,7 +189,7 @@ EOF
 # args: <string> <Nth-position> (starting from 1)
 function get_N_word_from_string() {
 	local tmp_arr=(${1})
-	printf ${tmp_arr[${2}-1]}
+	echo ${tmp_arr[${2}-1]}
 }
 
 # args: <string> <Nth-position> (starting from 1)
@@ -228,39 +228,99 @@ function debug_print_of_var_using_varname() {
 declare FUNC
 
 ## FUNCTIONS
+
 function show_if_else() {
+
 	local VAR_IF="${1}"
 	local VAR_ELSE="${2}"
-	local ALL_ARGS="${@}"
-	local ARGS=$(remove_first_and_second_words_of_string "${ALL_ARGS}")
+	local ARGS=${@:3}
 
 	for arg in ${ARGS}; do
-		[[ ${VAR_IF} == ${arg} ]] && printf "${VAR_IF}" && return 0
+		[[ ${VAR_IF} == ${arg} ]] && echo "${VAR_IF}" && return 0
 	done
 
-	printf "${VAR_ELSE}"
+	echo "${VAR_ELSE}"
 
 	return 1
+
 }
 
-function remove_first_word_if() {
-	local VAR_IF="${1}"
-	local ARGS="${@:2}"
-	local OUTPUT=""
 
-	for arg in ${VAR_IF}; do
-		[[ ${ARGS} =~ ${arg} ]] || OUTPUT+="${arg} "
+# args:
+#  N_word_number_to_be_the_if_words:NUMBER
+#  X_first_words_of_the_if_words:NUMBER
+#  if_words:MULTIPLE_WORDS
+#  belong_words:MULTIPLE_WORDS
+#
+function from_X_first_arguments_remove_the_Y_nth_word_if_it_belong_to() {
+
+	# CONFIGURABLE VARS
+
+	# variable of the number of obligatory arguments, that do not count for word argument processing
+	local DISCARD_UNTIL_WORD__NUMBER_OF_THE_ARGUMENT=2
+
+	# variable of the number of words until the if_words are counted
+	local IF_WORDS__NUMBER_OF_WORDS=${1}
+
+	# variable of the first number of if_words that count
+
+	(( ${2} > 0 )) && local THE_FIRST_N_WORDS_OF__IF_WORDS=${2} || local THE_FIRST_N_WORDS_OF__IF_WORDS=${#@}
+
+	# NON CONFIGURABLE VARS
+
+	# variable of where the if_words start (it is a argument number)
+	local BEGIN_IF_WORDS__NUMBER_OF_THE_ARGUMENT=$( expr ${DISCARD_UNTIL_WORD__NUMBER_OF_THE_ARGUMENT} + 1 )
+
+	# variable of where the belong_words start (it is a argument number)
+	local BEGIN_BELONG_WORDS__NUMBER_OF_THE_ARGUMENT=$(expr ${BEGIN_IF_WORDS__NUMBER_OF_THE_ARGUMENT} + ${IF_WORDS__NUMBER_OF_WORDS} )
+
+	# ${IF_WORDS__ARGUMENT}
+	local IF_WORDS__ARGUMENT
+	for (( i = ${BEGIN_IF_WORDS__NUMBER_OF_THE_ARGUMENT}; i < (( ${BEGIN_IF_WORDS__NUMBER_OF_THE_ARGUMENT} + ${IF_WORDS__NUMBER_OF_WORDS} )); i++ )); do
+		IF_WORDS__ARGUMENT+=( "${!i}" )
 	done
 
-	printf "${OUTPUT%% }"
+	# ${@:$BEGIN_IF_WORDS__NUMBER_OF_THE_ARGUMENT:$IF_WORDS__NUMBER_OF_WORDS}
+	local BELONG_WORDS__ARGUMENT=${@:$BEGIN_BELONG_WORDS__NUMBER_OF_THE_ARGUMENT}
+
+	local OUTPUT
+	local index=0
+
+	for word in ${IF_WORDS__ARGUMENT[@]}; do
+
+
+		if [ ${index} -eq ${THE_FIRST_N_WORDS_OF__IF_WORDS} ]; then
+
+			OUTPUT+="${word} "
+			continue
+
+		else
+
+			[[ " ${BELONG_WORDS__ARGUMENT} " =~ " ${word} " ]] || OUTPUT+="${word} "
+			((++index))
+
+		fi
+
+	done
+
+	echo "${OUTPUT%% }"
 
 	return 0
+
 }
+
+
+function remove_first_word_if_belongs_to() {
+	from_X_first_arguments_remove_the_Y_nth_word_if_it_belong_to 1 1 "${@}"
+}
+
+
 
 # PROCESSING LOGIC
 
 ## arguments
 ARGUMENTS="${@}"
+
 
 ## sanitize environment
 ${MKDIR} -p ${SCRIPT_CONFIG_DIR}
@@ -312,34 +372,6 @@ done
 SEARCH_ENGINE_URL="${SEARCH_ENGINE_ALIAS}"
 
 
-
-# Produce the link to pass to BROWSER_COMMAND
-
-## deal with bash-like-variables that are on the configured URL
-## some examples of bash-like-variables are $1, $2, ${bash_variable}, ${1:-auto}
-
-## read and process the bash variables from the $SEARCH_ENGINE_URL
-
-# ### create associative array for the bash variables from the target url of the config file
-# declare -A URL_CONFIG_VARS
-
-
-# while IFS= read -r bash_variable; do
-	
-# 	#### save the bash variables from the target url of the config file
-# 	export "name"="${bash_variable}"
-# 	eval "value=\"${bash_variable}\""
-# 	URL_CONFIG_VARS[${name}]="${value}"
-
-# 	#### remove the saved differences from $SEARCH_TERM
-# 	SEARCH_TERM=$(echo ${SEARCH_TERM} | ${SED} "s/${value} *//g")
-
-# done < <(get_bash_variables_from_string ${SEARCH_ENGINE_URL})
-
-# ### export for outside use
-# export URL_CONFIG_VARS
-
-
 # evaluate the bash variables of $SEARCH_ENGINE_URL
 
 ## inserting encoded search term
@@ -355,11 +387,6 @@ PROCESSED_SEARCH_URL=$(encode "${PROCESSED_SEARCH_URL}")
 
 
 # do the action
-
-# echo "Search Info:
-# search engine alias: \"${SEARCH_ENGINE_ARGUMENT}\"
-# search phrase: \"${SEARCH_TERM}\"" # SEARCH_TERM is wrong
-
 
 BROWSER_COMMAND_VAR=$(get_alias_value_using_alias_keyword "BROWSER_COMMAND")
 
