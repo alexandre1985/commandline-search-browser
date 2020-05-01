@@ -71,9 +71,12 @@ youtube=y
 v=https://vimeo.com/search?q=%MYSEARCHTERM
 vimeo=v
 
-# Cambridge Dictionary
-en=https://dictionary.cambridge.org/search/english/direct/?q=%MYSEARCHTERM
+# Chambers.co.uk
+en=https://chambers.co.uk/search/?title=21st&query=%%MYSEARCHTERM
 dic=en
+
+# Cambridge Dictionary
+cambridge=https://dictionary.cambridge.org/search/english/direct/?q=%MYSEARCHTERM
 
 # Priberam - Portuguese Dictionary
 pt=https://dicionario.priberam.org/%MYSEARCHTERM
