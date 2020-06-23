@@ -1,3 +1,6 @@
+( this repository now lives at [https://gitlab.com/alexandre1985/browser-search-cli/](https://gitlab.com/alexandre1985/browser-search-cli/) )
+
+
 # Search
 
 This is a (very powerful) BASH script for doing searches on the internet browser of your choice, through the command line or terminal.
